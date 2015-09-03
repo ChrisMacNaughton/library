@@ -19,3 +19,24 @@ import "deps/phoenix_html/web/static/js/phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+
+$("form#login").on("ajax:success", function(){
+  window.location = "/books" // redirect wherever you want to after login
+}).on("ajax:error", function(){
+  $(".alert-danger").html("Unable to login.");
+});
+
+$("form#register").on("ajax:success", function(){
+  window.location = "/login" // redirect wherever you want to after login
+}).on("ajax:error", function(){
+  $(".alert-danger").html("Unable to register.");
+});
+$('#btn-logout').click(function() {
+  $.post('/logout')
+  .then(function(data) {
+    window.location = "/"
+  })
+  .fail(function(data) {
+    alert(data.message);
+  })
+});

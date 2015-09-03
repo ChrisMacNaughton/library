@@ -14,7 +14,7 @@
 
   <li>
     <strong>Author:</strong>
-    <%= @book.author.first_name %> <%= @book.author.last_name %>
+    <%= link "#{@book.author.first_name} #{@book.author.last_name}", to: author_path(@conn, :show, @book.author) %>
   </li>
 
   <li>

@@ -29,6 +29,14 @@
     <%= label f, :upc, "Upc", class: "control-label" %>
     <%= text_input f, :upc, class: "form-control" %>
   </div>
+  <div class="form-group">
+    <select name="book[author_id]">
+      <option>Please select an author</option>
+    <%= for author <- @authors do %>
+      <option value="<%= author.id %>" selected="<%= author.id == @changeset.model.author_id%>" ><%= author.first_name %> <%= author.last_name %></option>
+    <%= end %>
+    </select>
+  </div>
 
   <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>

@@ -27,6 +27,9 @@ config :library, Library.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("DATABASE_URL"),
   pool_size: 20
+
+config :addict, mailgun_domain: System.get_env("MAILGUN_DOMAIN"),
+                amilgun_key: System.get_env("MAILGUN_API_KEY")
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key

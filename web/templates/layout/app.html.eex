@@ -15,9 +15,14 @@
     <div class="container" role="main">
       <div class="header">
         <ul class="nav nav-pills pull-right">
-          <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
+          <%= if logged_in?(@conn) do %>
+            <li><%= link "Authors", to: author_path(@conn, :index), class: "btn btn-primary" %></li>
+            <li><%= link "Books", to: book_path(@conn, :index), class: "btn btn-primary" %></li>
+            <li><a id="btn-logout" class="btn btn-primary" href="#">Logout</a></li>
+          <% else %>
+            <li><a id="btn-login" class="btn btn-primary" href="<%= page_path(@conn, :login) %>">Login</a></li>
+          <% end %>
         </ul>
-        <span class="logo"></span>
       </div>
 
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>

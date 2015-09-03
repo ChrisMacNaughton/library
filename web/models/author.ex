@@ -6,6 +6,7 @@ defmodule Library.Author do
     field :last_name, :string
 
     has_many :books, Library.Book
+    belongs_to :user, Library.User
     timestamps
   end
 

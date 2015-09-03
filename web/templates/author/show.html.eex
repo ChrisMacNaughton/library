@@ -14,5 +14,14 @@
 
 </ul>
 
+<h3>Books</h3>
+
+<ul>
+<%= for book <- @books do %>
+  <li>
+  <%= link book.title, to: book_path(@conn,:show, book ) %>
+  </li>
+<%= end %>
+</ul>
 <%= link "Edit", to: author_path(@conn, :edit, @author) %>
 <%= link "Back", to: author_path(@conn, :index) %>

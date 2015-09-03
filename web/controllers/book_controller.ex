@@ -4,27 +4,36 @@ defmodule Library.BookController do
   alias Library.Book
 
   plug :scrub_params, "book" when action in [:create, :update]
+  plug Addict.Plugs.Authenticated
+  plug :current_user
 
   def index(conn, _params) do
-    books = Book |> Repo.all |> Repo.preload [:author]
+    user = conn.assigns.user
+    query = from book in Library.Book,
+      where: book.user_id == ^user.id,
+      select: book
+    books = assoc(user, :books) |>Repo.all |> Repo.preload [:author]
+    # books = Book |> Repo.all |> Repo.preload [:author]
     render(conn, "index.html", books: books)
   end
 
   def new(conn, _params) do
     changeset = Book.changeset(%Book{})
-    render(conn, "new.html", changeset: changeset)
+    authors = Repo.all(Library.Author)
+    render(conn, "new.html", changeset: changeset, authors: authors)
   end
 
   def create(conn, %{"book" => book_params}) do
-    changeset = Book.changeset(%Book{}, book_params)
-
+    user = conn.assigns.user
+    changeset = Book.changeset(%Book{user_id: user.id}, book_params)
     case Repo.insert(changeset) do
       {:ok, _book} ->
         conn
         |> put_flash(:info, "Book created successfully.")
         |> redirect(to: book_path(conn, :index))
       {:error, changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        authors = Repo.all(Library.Author)
+        render(conn, "new.html", changeset: changeset, authors: authors)
     end
   end
 
@@ -36,7 +45,8 @@ defmodule Library.BookController do
   def edit(conn, %{"id" => id}) do
     book = Repo.get!(Book, id)
     changeset = Book.changeset(book)
-    render(conn, "edit.html", book: book, changeset: changeset)
+    authors = Repo.all(Library.Author)
+    render(conn, "edit.html", book: book, changeset: changeset, authors: authors)
   end
 
   def update(conn, %{"id" => id, "book" => book_params}) do
@@ -63,5 +73,10 @@ defmodule Library.BookController do
     conn
     |> put_flash(:info, "Book deleted successfully.")
     |> redirect(to: book_path(conn, :index))
+  end
+
+  def current_user(conn, _) do
+    user = Library.Session.current_user(conn)
+    assign(conn, :user, user)
   end
 end

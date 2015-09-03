@@ -7,6 +7,7 @@ defmodule Library.Book do
     field :isbn, :string
     field :upc, :string
     belongs_to :author, Library.Author
+    belongs_to :user, Library.User
 
     timestamps
   end

@@ -1,0 +1,6 @@
+{
+  "name": "library",
+  "dependencies": {
+    "jquery-ujs": "~1.0.3"
+  }
+}

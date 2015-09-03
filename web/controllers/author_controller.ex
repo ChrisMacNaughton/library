@@ -4,9 +4,15 @@ defmodule Library.AuthorController do
   alias Library.Author
 
   plug :scrub_params, "author" when action in [:create, :update]
+  plug Addict.Plugs.Authenticated
 
   def index(conn, _params) do
-    authors = Repo.all(Author)
+    user = Library.Session.current_user(conn)
+    import Ecto.Query, only: [from: 2]
+    query = from author in Library.Author,
+      where: author.user_id == ^user.id,
+      select: author
+    authors = Repo.all(query)
     render(conn, "index.html", authors: authors)
   end
 
@@ -16,7 +22,8 @@ defmodule Library.AuthorController do
   end
 
   def create(conn, %{"author" => author_params}) do
-    changeset = Author.changeset(%Author{}, author_params)
+    user = Library.Session.current_user(conn)
+    changeset = Author.changeset(%Author{user_id: user.id}, author_params)
 
     case Repo.insert(changeset) do
       {:ok, _author} ->
@@ -30,7 +37,8 @@ defmodule Library.AuthorController do
 
   def show(conn, %{"id" => id}) do
     author = Repo.get!(Author, id)
-    render(conn, "show.html", author: author)
+    books = assoc(author, :books) |> Repo.all
+    render(conn, "show.html", author: author, books: books)
   end
 
   def edit(conn, %{"id" => id}) do
