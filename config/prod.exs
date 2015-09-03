@@ -37,8 +37,9 @@ config :library, Library.Repo,
 #               keyfile: System.get_env("SOME_APP_SSL_KEY_PATH"),
 #               certfile: System.get_env("SOME_APP_SSL_CERT_PATH")]
 #
-url: [scheme: "https", host: "pure-wave-8529.herokuapp.com", port: 443],
-force_ssl: [rewrite_on: [:x_forwarded_proto], hsts: true],
+config :library, Library.endpoint,
+  url: [scheme: "https", host: "pure-wave-8529.herokuapp.com", port: 443],
+  force_ssl: [rewrite_on: [:x_forwarded_proto], hsts: true],
 # Where those two env variables return an absolute path to
 # the key and cert in disk or a relative path inside priv,
 # for example "priv/ssl/server.key".
