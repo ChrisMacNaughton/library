@@ -14,7 +14,7 @@ use Mix.Config
 config :library, Library.Endpoint,
   http: [port: System.get_env("PORT")],
   url: [scheme: "https", host: "pure-wave-8529.herokuapp.com", port: 443],
-  force_ssl: [rewrite_on: [:x_forwarded_proto], hsts: true]
+  force_ssl: [rewrite_on: [:x_forwarded_proto], hsts: true],
   cache_static_manifest: "priv/static/manifest.json"
 
 # Do not print debug messages in production
