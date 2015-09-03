@@ -21,6 +21,7 @@
             <li><a id="btn-logout" class="btn btn-primary" href="#">Logout</a></li>
           <% else %>
             <li><a id="btn-login" class="btn btn-primary" href="<%= page_path(@conn, :login) %>">Login</a></li>
+            <li><a id="btn-login" class="btn btn-primary" href="<%= page_path(@conn, :register) %>">Register</a></li>
           <% end %>
         </ul>
       </div>

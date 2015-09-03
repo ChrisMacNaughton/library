@@ -10,11 +10,6 @@ defmodule Library.UserControllerTest do
     {:ok, conn: conn}
   end
 
-  test "lists all entries on index", %{conn: conn} do
-    conn = get conn, user_path(conn, :index)
-    assert html_response(conn, 200) =~ "Listing users"
-  end
-
   test "renders form for new resources", %{conn: conn} do
     conn = get conn, user_path(conn, :new)
     assert html_response(conn, 200) =~ "New user"
